@@ -52,15 +52,17 @@ class BatchBill:
     def total(self):
         return sum([bill.ammount for bill in self.bills])
 
-    def __getitem__(self):
-        for bill in self.bills:
-            print(bill)
+    def __getitem__(self, index):
+        return self.bills[index]
 
 batch = BatchBill([a, b, c])
 
+for bill in batch:
+    print(bill)
+
 print(batch.__len__())
 print(batch.total())
-batch.__getitem__()
+
 
 class CashDesk:
 
