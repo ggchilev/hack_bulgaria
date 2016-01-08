@@ -87,8 +87,6 @@ class SocialNetwork:
         female_count = 0
 
 
-
-
         for item in self.graph[panda]:
             if item not in visited:
                 queue.append(item)
@@ -100,7 +98,7 @@ class SocialNetwork:
                     else:
                         return female_count
 
-                if not item == panda:
+                else:
 
                     queue.popleft()
                     visited.append(item)
@@ -114,11 +112,6 @@ class SocialNetwork:
                         for element in self.graph[item]:
                             if element not in visited:
                                 queue.append(element)
-        #         else:
-        #            return level
-
-        
-        # return level
 
 
 
@@ -155,9 +148,9 @@ network.add_panda(peshka)
 # network.add_panda(pesho)
 print(network.has_panda(pesho))
 network.make_friends(pesho, gosho)
-network.make_friends(gosho, peshka)
-network.make_friends(peshka, misho)
-network.make_friends(misho, spas)
+network.make_friends(gosho, spas)
+network.make_friends(spas, misho)
+#network.make_friends(misho, spas)
 print(network.are_friends(pesho, peshka))
 print(network.friends_of(pesho))
 print(network.connection_level(pesho, spas))
