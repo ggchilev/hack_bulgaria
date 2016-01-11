@@ -1,5 +1,6 @@
 from collections import deque
 from panda import Panda
+import json
 
 
 class SocialNetwork:
@@ -50,69 +51,60 @@ class SocialNetwork:
                 my_list.append(str(item))
             return my_list
 
-    def level(self, panda1, panda2):
+    def bfs_with_level(self, start_node, end_node):
+    
+        visited = set()
+        queue = deque()
 
-        queue = deque([])
-        visited = []
-        level = 0
+        visited.add(start_node)
+        queue.append((0, start_node))
 
+        while len(queue) != 0:
+            node_with_level = queue.popleft()
+            node = node_with_level[1]
+            level = node_with_level[0]
 
-        if panda1 == panda2:
-            return 0
+            if node == end_node:
+                return level
 
-        for item in self.graph[panda1]:
-            if item not in visited:
-                queue.append(item)
-        while queue:
+            for neighbour in self.graph[node]:
+                if neighbour not in visited:
+                    visited.add(neighbour)
+                    queue.append((level + 1, neighbour))
 
-            for item in list(queue):
-                if not item == panda2:
-                    queue.popleft()
-                    visited.append(item)
-                    level += 1
-                    if item in self.graph:
-                        for element in self.graph[item]:
-                            if element not in visited:
-                                queue.append(element)
-                else:
-                   return level
-        
-        return level
+        return -1
 
     def how_many_gender_in_network(self, lev, panda, gender):
-        queue = deque([])
-        visited = []
-        level = 0
+    
+        visited = set()
+        queue = deque()
         male_count = 0
         female_count = 0
 
+        visited.add(panda)
+        queue.append((0, panda))
 
-        for item in self.graph[panda]:
-            if item not in visited:
-                queue.append(item)
-        while queue:
-            for item in list(queue):
-                if level == lev:
-                    if gender == 'male':
-                        return male_count
-                    else:
-                        return female_count
+        while len(queue) != 0:
+            node_with_level = queue.popleft()
+            node = node_with_level[1]
+            level = node_with_level[0]
 
+            if level == lev:
+                if gender == 'male':
+                    return male_count
                 else:
+                    return female_count
 
-                    queue.popleft()
-                    visited.append(item)
-                    level += 1
-
-                    if item.get_gender() == 'male':
+            for neighbour in self.graph[node]:
+                if neighbour not in visited:
+                    visited.add(neighbour)
+                    queue.append((level + 1, neighbour))
+                    if neighbour.get_gender() == 'male':
                         male_count += 1
                     else:
                         female_count += 1
-                    if item in self.graph:
-                        for element in self.graph[item]:
-                            if element not in visited:
-                                queue.append(element)
 
+        return -1
 
 
     def connection_level(self, panda1, panda2):
@@ -121,7 +113,7 @@ class SocialNetwork:
         elif self.are_friends(panda1, panda2):
             return 1
         else:
-            level = self.level(panda1, panda2)
+            level = self.bfs_with_level(panda1, panda2)
             return level
 
     def are_connected(self, panda1, panda2):
@@ -131,13 +123,54 @@ class SocialNetwork:
         else:
             return False
 
+    def graph_to_string(self):
+        my_dic = {}
+        my_list = []
+        for panda in self.graph:
+            for friend in self.graph[panda]:
+                my_list.append(str(friend))
+            my_dic[str(panda)] = my_list
+            my_list = []
+        return my_dic
+
+    def string_to_graph(self):
+        my_dic = {}
+        my_list = []
+        for panda in pandas:
+            for friend in panda:
+                my_list.append[friend]
+
+
+    def write_to_json(self):
+
+        panda_dic = self.graph_to_string()
+
+        with open('socialNetwork.json', 'w') as f:
+            json.dump(panda_dic, f)
+
+
+    def load(self, file_name):
+
+        with open('socialNetwork.json', "r") as f:
+            data = json.load(f)
+            f.close()
+
+        for key, value in data.items():
+            key_split = key.split(',')
+            self.graph[Panda(key_split[0],'da','dwa')] = []
+            for v in value:
+                v_split = v.split(',')
+                self.graph[Panda(key_split[0], 'da', 'dwa')
+                              ].append(Panda(v_split[0], 'da', 'dwa'))
+
+        return data
 
 
 pesho = Panda("Pesho", "dwadwa", "male")
 gosho = Panda("GOsho", "dwadwa", "male")
 peshka = Panda("Peshka", "dwaeqw", "female")
-misho = Panda("Gdwa", "dwadwa", "female")
-spas = Panda("Peswq", "dwaeqw", "male")
+misho = Panda("Minka", "dwadwa", "female")
+spas = Panda("Mariiiinko", "dwaeqw", "male")
 
 network = SocialNetwork()
 
@@ -146,12 +179,17 @@ network.add_panda(gosho)
 network.add_panda(peshka)
 
 # network.add_panda(pesho)
-print(network.has_panda(pesho))
+# print(network.has_panda(pesho))
 network.make_friends(pesho, gosho)
 network.make_friends(gosho, spas)
-network.make_friends(spas, misho)
-#network.make_friends(misho, spas)
-print(network.are_friends(pesho, peshka))
-print(network.friends_of(pesho))
-print(network.connection_level(pesho, spas))
-print(network.how_many_gender_in_network(2, gosho, 'male'))
+network.make_friends(spas, peshka)
+#print(network.are_friends(pesho, peshka))
+# print(network.friends_of(pesho))
+#print(network.connection_level(gosho, spas))
+print(network.how_many_gender_in_network(1, gosho, 'male'))
+network.write_to_json()
+dic = network.load('socialNetwork.json')
+network2 = SocialNetwork()
+network2.graph = dic
+print(network2.are_friends(pesho, gosho))
+
