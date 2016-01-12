@@ -1,34 +1,36 @@
 from copy import deepcopy
 
 
+
 def is_number_balanced(n):
-    leftSum = 0
-    rightSum = 0
-    if n % 10 == n:
+    
+    left_side = 0
+    right_side = 0
+    middle = 0
+    number = str(n)
+    if len(number) == 1:
         return True
-    else:
-        arr = []
-        while n != 0:
-            arr.append(n % 10)
-            n = n // 10
-        print(arr)
-        if(len(arr) % 2 == 0):
-            print(len(arr))
-            return False
+
+    if len(number) %2 == 0:
+        middle = int(len(number)/2)
+        for index in range(0, int(middle)):
+            left_side += int(number[index])
+        for index in range(middle, len(number)):
+            right_side += int(number[index])
+        if left_side == right_side:
+            return True
         else:
-            lastIndex = len(arr)
-            middle = (int)(len(arr) / 2)
-            print(middle)
-            for index in range(0, middle):
-                leftSum += arr[index]
-            print(leftSum)
-            for index2 in range(middle + 1, len(arr)):
-                rightSum += arr[index2]
-            print(rightSum)
-            if(leftSum == rightSum):
-                return True
-            else:
-                return False
+            return False
+    else:
+        middle = int(len(number)/2) + 1
+        for index in range(0, int(middle)-1):
+            left_side += int(number[index])
+        for index in range(middle, len(number)):
+            right_side += int(number[index])
+        if left_side == right_side:
+            return True
+        else:
+            return False
 
 
 def is_increasing(seq):
@@ -36,7 +38,7 @@ def is_increasing(seq):
     for index in range(0, len(seq) - 1):
         if len(seq) == 1:
             return True
-        elif (seq[index] > seq[index + 1]):
+        elif (seq[index] >= seq[index + 1]):
             return False
     return True
 
@@ -46,7 +48,7 @@ def is_decreasing(seq):
         return True
     for index in range(0, len(seq) - 1):
 
-        if (seq[index] < seq[index + 1]):
+        if (seq[index] <= seq[index + 1]):
             return False
     return True
 
@@ -56,10 +58,10 @@ def get_largest_palindrome(n):
     for index in range(n - 1, 0, -1):
         num = str(index)
         revNum = num[::-1]
-        print(num + "  " + revNum)
         if num == revNum:
-            return num
-    return n
+            return int(num)
+    return int(n)
+
 
 
 def prime_numbers(n):
@@ -68,13 +70,15 @@ def prime_numbers(n):
     for index in range(n, 1, -1):
         for index2 in range(2, index):
             if index % index2 == 0:
-                print(index2)
                 isPrime = False
                 break
         if isPrime == True:
             list.append(index)
         isPrime = True
-    return list
+    return list[::-1]
+
+
+print(prime_numbers(30))
 
 
 def is_anagram(a, b):
@@ -167,4 +171,4 @@ def is_transversal(transversal, family):
         number = 0
     return True
 
-print(is_transversal([2, 3, 4], [[1, 7], [2, 3, 5], [4, 8]]))
+#print(is_transversal([2, 3, 4], [[1, 7], [2, 3, 5], [4, 8]]))
