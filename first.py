@@ -1,8 +1,7 @@
 def sum_of_digits(n):
     sum = 0
     if n > 0:
-        while n != 0 or n != -1:
-            print(n)
+        while n != 0:
             sum += n % 10
             n = n // 10
         return sum
@@ -13,6 +12,7 @@ def sum_of_digits(n):
         sum *= -1
         return sum
 
+print(sum_of_digits(2))
 
 def to_Digits(n):
     arr = []
