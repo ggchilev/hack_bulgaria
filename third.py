@@ -149,8 +149,8 @@ def numbers_to_message(pressedSequence):
                 txt = ""
     return output
 
-print(numbers_to_message(
-    [1, 4, 4, 4, 8, 8, 8, 6, 6, 6, 0, 3, 3, 0, 7, 7, 7, 7, 7, 2, 6, 6, 3, 2]))
+#print(numbers_to_message(
+#    [1, 4, 4, 4, 8, 8, 8, 6, 6, 6, 0, 3, 3, 0, 7, 7, 7, 7, 7, 2, 6, 6, 3, 2]))
 
 
 def message_to_numbers(messege):
@@ -158,7 +158,6 @@ def message_to_numbers(messege):
     keyboard = {2: "abc", 3: "def", 4: "ghi", 5: "jkl",
                 6: "mno", 7: "pqrs", 8: "tuv", 9: "wxyz", 0: " "}
     for symbol in messege:
-        # print(symbol)
         for item in keyboard:
             if symbol.isupper():
                 arr.append(1)
@@ -172,6 +171,6 @@ def message_to_numbers(messege):
                         if symbol != (keyboard[item])[index]:
                             arr.append(item)
         arr.append(-1)
-    return arr
+    return arr[0:len(arr)-1]
 
-# print(messege_to_numbers("Ivo e panda"))
+#print(message_to_numbers("abc"))
