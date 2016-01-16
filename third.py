@@ -21,7 +21,7 @@ def nan_expand(times):
     else:
         for i in range(0, times):
             expansion += "Not a "
-        expansion += " NaN"
+        expansion += "NaN"
         return expansion
 
 
@@ -123,13 +123,12 @@ def sum_of_numbers(st):
 # print(sum_of_numbers("3ab2"))
 
 
-def numbers_to_messege(pressedSequence):
+def numbers_to_message(pressedSequence):
 
     output = ""
     txt = ""
     is_one = False
     arr = group(pressedSequence)
-    # print(arr)
     keyboard = {2: "abc", 3: "def", 4: "ghi", 5: "jkl",
                 6: "mno", 7: "pqrs", 8: "tuv", 9: "wxyz", 0: " "}
     for item in arr:
@@ -137,28 +136,24 @@ def numbers_to_messege(pressedSequence):
         for symbol in keyboard:
             if 1 in item:
                 is_one = True
-                print("BOZA")
                 break
             if symbol in item:
                 for i in item:
-                    # if len(keyboard[symbol]) <= len(item) - 1:
                     length = len(item) - 1 - len(keyboard[symbol])
-                # print((keyboard[symbol])[kilo])
                 if is_one == True:
                     txt += ((keyboard[symbol])[length]).upper()
                     is_one = False
                 else:
                     txt += (keyboard[symbol])[length]
-                                # print(txt)
                 output += txt
                 txt = ""
     return output
 
-print(numbers_to_messege(
+print(numbers_to_message(
     [1, 4, 4, 4, 8, 8, 8, 6, 6, 6, 0, 3, 3, 0, 7, 7, 7, 7, 7, 2, 6, 6, 3, 2]))
 
 
-def messege_to_numbers(messege):
+def message_to_numbers(messege):
     arr = []
     keyboard = {2: "abc", 3: "def", 4: "ghi", 5: "jkl",
                 6: "mno", 7: "pqrs", 8: "tuv", 9: "wxyz", 0: " "}
@@ -168,7 +163,6 @@ def messege_to_numbers(messege):
             if symbol.isupper():
                 arr.append(1)
                 symbol = symbol.lower()
-                #break
             if symbol in keyboard[item]:
                 for index in range(0,len(keyboard[item])):
                     if symbol == (keyboard[item])[index]:
