@@ -13,7 +13,7 @@ def sum_of_digits(n):
         return sum
 
 
-def to_number(n):
+def to_digits(n):
     arr = []
     if n == 0:
         arr.append(0)
@@ -28,11 +28,12 @@ def to_number(n):
         return arr[::-1]
 
 
-def to_Numbers(n):
-    number = 0
+def to_number(n):
+    number = ""
     for item in n:
-        number = (number * 10) + item
-    return number
+        number += str(item)
+    return int(number)
+
 
 
 def fact_digits(n):
@@ -73,7 +74,8 @@ def fib_number(n):
         temp = a
         a = b
         b = temp + b
-    return number
+    return int(number)
+
 
 
 def palindrome(n):
