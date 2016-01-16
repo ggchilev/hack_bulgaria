@@ -29,11 +29,6 @@ def to_Digits(n):
         return arr[::-1]
 
 
-
-
-print(to_Digits(2210))
-
-
 def to_Numbers(n):
     number = 0
     for item in n:
@@ -44,6 +39,10 @@ def to_Numbers(n):
 def fact_digits(n):
     sum = 0
     fac = 1
+
+    if n < 0:
+        n *= -1
+
     while n != 0:
         number = n % 10
         for index in range(1, number + 1):
@@ -125,11 +124,3 @@ def char_histogram(str):
         num = 0
     return map
 
-"""def func(str):
-    num=0
-    for ch in str:
-        if ch in "oiueay":
-            num+=1
-    return num
-        
-print(func("dwaeqwro"))  """
