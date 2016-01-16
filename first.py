@@ -9,12 +9,11 @@ def sum_of_digits(n):
         num = str(n)
         for index in range(1, len(num)):
             sum += int(num[index])
-        sum *= -1
+        #sum *= -1
         return sum
 
-print(sum_of_digits(2))
 
-def to_Digits(n):
+def to_number(n):
     arr = []
     if n == 0:
         arr.append(0)
@@ -68,9 +67,9 @@ def fibonacci(n):
 def fib_number(n):
     a = 1
     b = 1
-    number = 0
+    number = ""
     for i in range(0, n):
-        number = number * 10 + a
+        number += str(a) 
         temp = a
         a = b
         b = temp + b
@@ -85,25 +84,28 @@ def palindrome(n):
         return False
 
 
-def count_vowels(str):
+def count_vowels(new_str):
     vowels = ['a', 'e', 'i', 'o', 'u', 'y']
     number = 0
-    for item in str:
+    my_str = new_str.lower()
+    for item in my_str:
         for vowItem in vowels:
             if item == vowItem:
                 number += 1
     return number
 
 
-def count_consonants(str):
+def count_consonants(new_str):
     consostants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
                    'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z']
+    my_str = new_str.lower()
     number = 0
-    for item in str:
+    for item in my_str:
         for consItem in consostants:
             if item == consItem:
                 number += 1
     return number
+
 
 
 def char_histogram(str):
