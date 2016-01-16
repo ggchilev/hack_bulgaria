@@ -3,12 +3,18 @@ class BankAccount:
 
     def __init__(self, name, balance, currency):
         self._name = name
-        self._balance = balance
+        if balance < 0:
+            raise ValueError
+        else:
+            self._balance = balance
         self._currency = currency
 
     def deposit(self, amount):
-        self._balance += amount
-        return amount
+        if amount < 0:
+            raise ValueError
+        else:
+            self._balance += amount
+            return amount
 
     def withdraw(self, amount):
         if self._balance >= amount:
@@ -20,7 +26,7 @@ class BankAccount:
     def get_name(self):
         return self._name
 
-    def get_balance(self):
+    def balance(self):
         return self._balance
 
     def get_currency(self):
