@@ -170,7 +170,11 @@ def message_to_numbers(messege):
                     else:
                         if symbol != (keyboard[item])[index]:
                             arr.append(item)
-        arr.append(-1)
-    return arr[0:len(arr)-1]
+        if not " " in messege: 
+            arr.append(-1)
+    if not " " in messege:
+        return arr[0:len(arr)-1]
+    else:
+        return arr
 
-#print(message_to_numbers("abc"))
+#print(message_to_numbers("abc a"))
