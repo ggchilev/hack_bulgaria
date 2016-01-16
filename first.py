@@ -13,16 +13,25 @@ def sum_of_digits(n):
         sum *= -1
         return sum
 
-print(sum_of_digits(-322))
-
 
 def to_Digits(n):
     arr = []
-    while n != 0:
-        number = n % 10
-        arr.append(number)
-        n = n // 10
-    return arr[::-1]
+    if n == 0:
+        arr.append(0)
+        return arr
+    if n < 0:
+        n *= -1
+    if n > 0:
+        while n != 0:
+            number = n % 10
+            arr.append(number)
+            n = n // 10
+        return arr[::-1]
+
+
+
+
+print(to_Digits(2210))
 
 
 def to_Numbers(n):
