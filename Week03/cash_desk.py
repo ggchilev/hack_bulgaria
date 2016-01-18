@@ -1,10 +1,15 @@
 class Bill:
 
     def __init__(self, ammount):
-        self.ammount = ammount
+        if type(ammount) is not int:
+            raise TypeError
+        elif ammount < 0:
+            raise ValueError
+        else:
+            self.ammount = ammount
 
     def __str__(self):
-        return "Money "+str(self.ammount)+" dollars"
+        return "A " + str(self.ammount) + "$ bill"
 
     def __repr__(self):
         return self.__str__()
@@ -23,11 +28,11 @@ a = Bill(10)
 b = Bill(5)
 c = Bill(10)
 
-print(int(a))
-print(str(a))
-print(a)
-print(a == b)
-print(a == c)
+# print(int(a))
+# print(str(a))
+# print(a)
+#print(a == b)
+#print(a == c)
 
 money_holder = {}
 money_holder[a] = 1
@@ -35,7 +40,7 @@ money_holder[a] = 1
 if c in money_holder:
     money_holder[c] += 1
 
-print(money_holder)
+# print(money_holder)
 
 
 class BatchBill:
@@ -57,11 +62,11 @@ class BatchBill:
 
 batch = BatchBill([a, b, c])
 
-for bill in batch:
-    print(bill)
+# for bill in batch:
+#    print(bill)
 
-print(batch.__len__())
-print(batch.total())
+# print(batch.__len__())
+# print(batch.total())
 
 
 class CashDesk:
@@ -74,31 +79,49 @@ class CashDesk:
         sum_bills = 0
         if type(money) is Bill:
             self.deskAmount += money.ammount
-            self.arr.append(money.ammount)
-            return money.ammount
+            self.arr.append(money)
+            return self.deskAmount
         elif type(money) is BatchBill:
             for mon in money.bills:
-                self.arr.append(mon.ammount)
-                sum_bills += mon.ammount
-                self.deskAmount += sum_bills
-            return sum_bills
+                self.arr.append(mon)
+                self.deskAmount += mon.ammount
+            return self.deskAmount
+
+    def da(self):
+        for item in self.arr:
+            print(item)
 
     def total(self):
         return self.deskAmount
 
+    def sort_arr(self):
+        for index in range(0, len(self.arr)):
+            for index in range(0, len(self.arr) - 1):
+                if self.arr[index].ammount > self.arr[index + 1].ammount:
+                    temp = self.arr[index]
+                    self.arr[index] = self.arr[index + 1]
+                    self.arr[index + 1] = temp
+
+        return self.arr
+
     def inspect(self):
         dic = {}
-        print("We have a total of "+str(self.deskAmount)+" in the desk")
-        print("We have the following count of bills :")
-        num = 0 
+        my_str = "We have a total of " + \
+            str(self.deskAmount) + "$ in the desk \n"
+        my_str += "We have the following count of bills, sorted in ascending order : \n"
+        num = 0
         n = 0
+        self.sort_arr()
         for item in self.arr:
             dic[item] = self.arr.count(item)
-        return dic
+            if str(item) not in my_str:
+                my_str += str(item) + " - " + str(dic[item]) + "\n"
+        return my_str
 
 
 desk = CashDesk()
 desk.take_money(batch)
 desk.take_money(a)
-print(desk.total())
-print(desk.inspect())
+#print(desk.sort_arr())
+#print(desk.total())
+#print(desk.inspect())
