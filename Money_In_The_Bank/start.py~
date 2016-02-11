@@ -1,0 +1,140 @@
+import sql_manager
+import hashlib
+import random
+import getpass
+
+def check_for_numbers(password):
+    num = 0
+    for index in range(0, 10):
+        if str(index) in password:
+            num += 1
+    if num == 0:
+        return False
+    else:
+        return True
+
+
+def check_for_upper_case(password):
+    for index in range(0, len(password)):
+        if password[index].isupper():
+            return True
+    return False
+
+
+def check_for_special_symbols(password):
+    symbol = "~`!@#$%^&*()_-+={}[]:>;',</?*-+"
+    for index in range(0, len(password)):
+        if password[index] in symbol:
+            return True
+    return False
+
+
+def check_pass(password, username):
+    if len(password) < 8:
+        print("More then 8 symbols")
+        return False
+    if not check_for_numbers(password):
+        print("No numbers")
+        return False
+    if not check_for_upper_case(password):
+        print("No uppercase")
+        return False
+    if not check_for_special_symbols(password):
+        print("No special symbols")
+        return False
+    if username in password:
+        print("Username in pass")
+        return False
+    return True
+
+
+def generate_salt():
+    rbits = random.getrandbits(256)
+    rbits_str = str(rbits)
+    m = hashlib.sha256()
+    m.update(rbits_str.encode('utf-8'))
+    return m.hexdigest()
+
+
+def hash_password(password, salt=None):
+    m = hashlib.sha256()
+    if salt is None:
+        salt = generate_salt()
+    concatenated = password + salt
+    m.update(concatenated.encode('utf-8'))
+    return (m.hexdigest(), salt)
+
+
+def strong_password(username):
+    password = getpass.getpass("Enter your password: ")
+    while check_pass(password, username) is False:
+        password = getpass.getpass("Enter your password: ")
+    return hash_password(password, salt=None)
+
+
+
+def main_menu():
+    print("""Welcome to our bank service. You are not logged in.
+                                  \nPlease register or login""")
+    while True:
+        command = input("$$$>")
+        if command == 'register':
+            username = input("Enter your username: ")
+            password = strong_password(username)
+
+            sql_manager.register(username, password)
+            print("Registration Successfull")
+        elif command == 'login':
+            username = input("Enter your username: ")
+            password = getpass.getpass('Enter your password: ')
+
+            logged_user = sql_manager.login(username, password)
+
+            if logged_user:
+                logged_menu(logged_user)
+            else:
+                print("Login failed")
+        elif command == 'help':
+            print("login - for logging in!")
+            print("register - for creating new account!")
+            print("exit - for closing program!")
+
+        elif command == 'exit':
+            break
+        else:
+            print("Not a valid command")
+
+
+def logged_menu(logged_user):
+    print("Welcome you are logged in as: " + logged_user.get_username())
+    while True:
+        command = input("Logged>>")
+
+        if command == 'info':
+            print("You are: " + logged_user.get_username())
+            print("Your id is: " + str(logged_user.get_id()))
+            print("Your balance is:" + str(logged_user.get_balance()) + '$')
+
+        elif command == 'changepass':
+            new_pass = input("Enter your new password: ")
+            sql_manager.change_pass(new_pass, logged_user)
+
+        elif command == 'change-message':
+            new_message = input("Enter your new message: ")
+            sql_manager.change_message(new_message, logged_user)
+        elif command == 'show-message':
+            print(logged_user.get_message())
+
+        elif command == 'help':
+            print("info - for showing account info")
+            print("changepass - for changing passowrd")
+            print("change-message - for changing users message")
+            print("show-message - for showing users message")
+
+
+def main():
+    sql_manager.create_database()
+    main_menu()
+
+if __name__ == '__main__':
+    main()
